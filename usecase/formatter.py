@@ -55,10 +55,11 @@ class Formatter:
             return ""
 
         days = self._compress_day_list(msg.missing_days)
+        percentage = round(msg.completed_count/msg.max_day * 100,1)
 
         out_info = [
-            f"{msg.sender}님의 진행상황",
-            f"{msg.completed_count}/{msg.max_day} 완료",
+            f"{self._pad_crown(msg.sender,percentage)}님의 진행상황",
+            f"{msg.completed_count}/{msg.max_day} 완료({percentage}%)",
         ]
 
         if days:
@@ -71,8 +72,14 @@ class Formatter:
     ) -> dict[str,list[str]]:
         out = []
         for msg in messages:
-            percentage = round(msg.completed_count/msg.max_day,3) * 100
-            out_info = f"{msg.sender}:{msg.completed_count}/{msg.max_day}({percentage}%)"
+            percentage = round(msg.completed_count/msg.max_day * 100,1)
+            out_info = f"{self._pad_crown(msg.sender,percentage)}:{msg.completed_count}/{msg.max_day}({percentage}%)"
             out.append(out_info)
 
         return {"msg":out}
+
+    def _pad_crown(self, name, percentage):
+        if percentage > 99.99:
+            return "👑" + name
+        else:
+            return name
