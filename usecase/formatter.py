@@ -71,7 +71,8 @@ class Formatter:
     ) -> str:
         out = []
         for msg in messages:
-            out_info = f"{msg.sender}:{msg.completed_count}/{msg.max_day}"
+            percentage = round(msg.completed_count/msg.max_day,3) * 100
+            out_info = f"{msg.sender}:{msg.completed_count}/{msg.max_day}({percentage}%)"
             out.append(out_info)
 
-        return "\n\n".join(out)
+        return "\n".join(out)
