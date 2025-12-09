@@ -50,7 +50,7 @@ class Formatter:
                 parts.append(f"{s}-{e}")
         return "[" + ", ".join(parts) + "]"
 
-    def send_to_kakao_api_one_sender(self, msg: ProgressSummary | Errors) -> str:
+    def send_to_kakao_api_one_sender(self, msg: ProgressSummary | Errors) -> dict[str,list[str]]:
         if isinstance(msg, Errors):
             return ""
 
@@ -64,15 +64,15 @@ class Formatter:
         if days:
             out_info.append(f"{self._format_compressed_days(days)}를 놓쳤습니다.")
 
-        return "\n".join(out_info)
+        return {"msg":out_info}
 
     def send_to_kakao_api_all_senders(
         self, messages: list[ProgressSummary] | Errors
-    ) -> str:
+    ) -> dict[str,list[str]]:
         out = []
         for msg in messages:
             percentage = round(msg.completed_count/msg.max_day,3) * 100
             out_info = f"{msg.sender}:{msg.completed_count}/{msg.max_day}({percentage}%)"
             out.append(out_info)
 
-        return "\n".join(out)
+        return {"msg":out}

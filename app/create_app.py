@@ -18,6 +18,7 @@ from utilities import AbsoluteDayCounter
 
 def create_flask_app():
     app = Flask(__name__)
+    app.config["JSON_AS_ASCII"] = False
 
     clock = AbsoluteDayCounter(start_date=START_DATE, tz_offset_hours=3)
 
