@@ -50,12 +50,14 @@ class Formatter:
                 parts.append(f"{s}-{e}")
         return "[" + ", ".join(parts) + "]"
 
-    def send_to_kakao_api_one_sender(self, msg: ProgressSummary | Errors) -> dict[str,list[str]]:
+    def send_to_kakao_api_one_sender(
+        self, msg: ProgressSummary | Errors
+    ) -> dict[str, list[str]]:
         if isinstance(msg, Errors):
             return ""
 
         days = self._compress_day_list(msg.missing_days)
-        percentage = round(msg.completed_count/msg.max_day * 100,1)
+        percentage = round(msg.completed_count / msg.max_day * 100, 1)
 
         out_info = [
             f"{self._pad_crown(msg.sender,percentage)}님의 진행상황",
@@ -65,18 +67,18 @@ class Formatter:
         if days:
             out_info.append(f"{self._format_compressed_days(days)}를 놓쳤습니다.")
 
-        return {"msg":out_info}
+        return {"msg": out_info}
 
     def send_to_kakao_api_all_senders(
         self, messages: list[ProgressSummary] | Errors
-    ) -> dict[str,list[str]]:
+    ) -> dict[str, list[str]]:
         out = []
         for msg in messages:
-            percentage = round(msg.completed_count/msg.max_day * 100,1)
+            percentage = round(msg.completed_count / msg.max_day * 100, 1)
             out_info = f"{self._pad_crown(msg.sender,percentage)}:{msg.completed_count}/{msg.max_day}({percentage}%)"
             out.append(out_info)
 
-        return {"msg":out}
+        return {"msg": out}
 
     def _pad_crown(self, name, percentage):
         if percentage > 99.99:

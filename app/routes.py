@@ -18,7 +18,7 @@ def init_app(app):
 
         progress = handler.handle_message(message)
 
-        reply:dict[str,list[str]]
+        reply: dict[str, list[str]]
 
         if isinstance(progress, list):
             reply = formatter.send_to_kakao_api_all_senders(progress)
